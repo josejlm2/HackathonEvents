@@ -10,6 +10,9 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.parse.Parse;
+import com.parse.ParseObject;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -18,7 +21,15 @@ public class MainActivity extends ActionBarActivity {
            super.onCreate(savedInstanceState);
            setContentView(R.layout.activity_main);
 
-           // Simple array with a list of my favorite TV shows
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
+        Parse.initialize(this, "SlkykJCMuwaB3A9kA1E0iaAGXmxyiWWbHqF2Pxes", "rwJHOyXjGhe6Gr97UfOguHuLtt5ucNxIZhdYFuHq");
+
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("foo", "bar");
+        testObject.saveInBackground();
+
+        // Simple array with a list of my favorite TV shows
            String[] favoriteTVShows = {"Pushing Daisies", "Better Off Ted",
        	                "Twin Peaks", "Freaks and Geeks", "Orphan Black", "Walking Dead",
       	                "Breaking Bad", "The 400", "Alphas", "Life on Mars"};
