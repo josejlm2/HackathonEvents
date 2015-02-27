@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.parse.FindCallback;
 import com.parse.Parse;
@@ -43,7 +45,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         mListView.setAdapter(mAdapter);
-//        mListView.setOnItemClickListener(this);
+   //     mListView.setOnItemClickListener(this);
       //  updateData();
         updateData2();
 
@@ -82,8 +84,8 @@ public class MainActivity extends ActionBarActivity {
 
 
 
-
-        theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+    */
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
@@ -93,7 +95,7 @@ public class MainActivity extends ActionBarActivity {
        	                Toast.makeText(MainActivity.this, tvShowPicked, Toast.LENGTH_SHORT).show();
 
        	        }
-        });*/
+        });
     }
 
 

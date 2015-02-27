@@ -1,5 +1,7 @@
 package com.dreamtheimpossiblestudios.hackathonevents;
+
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 
 /**
@@ -9,6 +11,8 @@ import com.parse.ParseObject;
 
 @ParseClassName("Events")
 public class Hackathon extends ParseObject{
+    private ParseFile picture;
+
     public Hackathon(){
 
     }
@@ -27,6 +31,15 @@ public class Hackathon extends ParseObject{
 
     public void setLocation(String Location){
         put("Location", Location);
+    }
+
+    public void setLogo(ParseFile Logo){
+        picture = Logo;
+        put("Logo", Logo);
+    }
+
+    public ParseFile getLogo(){
+        return getParseFile("Logo");
     }
 
 }
