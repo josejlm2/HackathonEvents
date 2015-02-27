@@ -6,36 +6,50 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
+import com.parse.ParseException;
 import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
+    private EditText mHackInput;
+    private ListView mListView;
+    private HackAdapter mAdapter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
+        //initialize parse
         Parse.enableLocalDatastore(this);                                                            // Enable Local Datastore
         Parse.initialize(this, "SlkykJCMuwaB3A9kA1E0iaAGXmxyiWWbHqF2Pxes",
                 "rwJHOyXjGhe6Gr97UfOguHuLtt5ucNxIZhdYFuHq");
-
         ParseObject.registerSubclass(Hackathon.class);                                              //register class with activity
 
 
+        mAdapter = new HackAdapter(this, new ArrayList<Hackathon>());
+        mHackInput = (EditText) findViewById(R.id.hackathon_input);
+        mListView = (ListView) findViewById(R.id.theListView);
+
+
+        mListView.setAdapter(mAdapter);
+//        mListView.setOnItemClickListener(this);
+        //updateData();
 
 
 
 
-
+/*
 
         // Simple array with a list of my favorite TV shows
            String[] favoriteTVShows = {"Pushing Daisies", "Better Off Ted",
@@ -69,35 +83,70 @@ public class MainActivity extends ActionBarActivity {
 
 
 
+        theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
+       	                String tvShowPicked = "You selected " +
+                                   String.valueOf(adapterView.getItemAtPosition(i));
 
+       	                Toast.makeText(MainActivity.this, tvShowPicked, Toast.LENGTH_SHORT).show();
 
-         theListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                 @Override
-                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-        	                String tvShowPicked = "You selected " +
-                                    String.valueOf(adapterView.getItemAtPosition(i));
-
-        	                Toast.makeText(MainActivity.this, tvShowPicked, Toast.LENGTH_SHORT).show();
-
-        	            }
-             });
+       	        }
+        });*/
     }
-    public void createHackathon(View v) {
-        EditText mHackInput = (EditText) findViewById(R.id.hackathon_input);
-        ListView mListView = (ListView) findViewById(R.id.theListView);
 
+
+    public void createHackathon(View v) {
         if (mHackInput.getText().length() > 0){
             Hackathon t = new Hackathon();
             t.setName(mHackInput.getText().toString());
             Log.d("TEST", mHackInput.getText().toString());
             t.setLocation("");
             t.saveEventually();
+            mAdapter.insert(t, 0);                                                                  //inserts new info into views
             mHackInput.setText("");
         }
+        HackAdapter mAdapter = new HackAdapter(this, new ArrayList<Hackathon>());
+        mListView.setAdapter(mAdapter);
     }
 
+    public void updateData(){
+
+        ParseQuery<Hackathon> query = ParseQuery.getQuery(Hackathon.class);
+        //query.whereEqualTo("user", ParseUser.getCurrentUser());
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_THEN_NETWORK);
+        query.findInBackground(new FindCallback<Hackathon>() {
+            @Override
+            public void done(List<Hackathon> tasks, ParseException error) {
+                if(tasks != null){
+                    //mAdapter.clear();
+                    for (int i = 0; i < tasks.size(); i++) {
+
+                        Log.d("DATA?", tasks.get(i).getName());
+                        mAdapter.add(tasks.get(i));
+                    }
+                }
+            }
+        });
+
+
+
+
+
+        /*
+        ParseQuery<Hackathon> query = ParseQuery.getQuery(Hackathon.class);
+        query.findInBackground(new FindCallback<Hackathon>() {
+
+            @Override
+            public void done(List<Hackathon> tasks, ParseException error) {
+                if(tasks != null){
+                    //mAdapter.clear();
+                    //mAdapter.addAll(tasks);
+                }
+            }
+        });*/
+    }
 
 
     @Override
@@ -111,7 +160,6 @@ public class MainActivity extends ActionBarActivity {
                                                                                                     // automatically handle clicks on the Home/Up button, so long
                                                                                                     // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         if (id == R.id.action_settings) {                                                           //noinspection SimplifiableIfStatement
             return true;
         }
