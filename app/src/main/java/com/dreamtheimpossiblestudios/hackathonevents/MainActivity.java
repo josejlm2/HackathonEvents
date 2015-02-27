@@ -44,8 +44,8 @@ public class MainActivity extends ActionBarActivity {
 
         mListView.setAdapter(mAdapter);
 //        mListView.setOnItemClickListener(this);
-        //updateData();
-
+      //  updateData();
+        updateData2();
 
 
 
@@ -110,6 +110,40 @@ public class MainActivity extends ActionBarActivity {
         HackAdapter mAdapter = new HackAdapter(this, new ArrayList<Hackathon>());
         mListView.setAdapter(mAdapter);
     }
+
+
+    public void updateData2(){
+        ParseQuery<Hackathon> query = ParseQuery.getQuery(Hackathon.class);
+        query.findInBackground(new FindCallback<Hackathon>() {
+
+            @Override
+            public void done(List<Hackathon> tasks, ParseException error) {
+                if(tasks != null){
+                    mAdapter.clear();
+                    mAdapter.addAll(tasks);
+                }
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public void updateData(){
 
