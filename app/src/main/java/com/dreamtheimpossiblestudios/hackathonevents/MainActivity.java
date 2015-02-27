@@ -2,10 +2,12 @@ package com.dreamtheimpossiblestudios.hackathonevents;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -18,16 +20,22 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-           super.onCreate(savedInstanceState);
-           setContentView(R.layout.activity_main);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
 
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "SlkykJCMuwaB3A9kA1E0iaAGXmxyiWWbHqF2Pxes", "rwJHOyXjGhe6Gr97UfOguHuLtt5ucNxIZhdYFuHq");
 
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+        Parse.enableLocalDatastore(this);                                                            // Enable Local Datastore
+        Parse.initialize(this, "SlkykJCMuwaB3A9kA1E0iaAGXmxyiWWbHqF2Pxes",
+                "rwJHOyXjGhe6Gr97UfOguHuLtt5ucNxIZhdYFuHq");
+
+        ParseObject.registerSubclass(Hackathon.class);                                              //register class with activity
+
+
+
+
+
+
+
 
         // Simple array with a list of my favorite TV shows
            String[] favoriteTVShows = {"Pushing Daisies", "Better Off Ted",
@@ -76,6 +84,20 @@ public class MainActivity extends ActionBarActivity {
         	            }
              });
     }
+    public void createHackathon(View v) {
+        EditText mHackInput = (EditText) findViewById(R.id.hackathon_input);
+        ListView mListView = (ListView) findViewById(R.id.theListView);
+
+        if (mHackInput.getText().length() > 0){
+            Hackathon t = new Hackathon();
+            t.setName(mHackInput.getText().toString());
+            Log.d("TEST", mHackInput.getText().toString());
+            t.setLocation("");
+            t.saveEventually();
+            mHackInput.setText("");
+        }
+    }
+
 
 
     @Override

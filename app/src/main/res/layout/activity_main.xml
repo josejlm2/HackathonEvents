@@ -9,6 +9,31 @@
      android:orientation="vertical"
      tools:context="com.dreamtheimpossiblestudios.hackathonevents.app.MainActivity">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <EditText
+            android:id="@+id/hackathon_input"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="text"
+            android:hint="Enter a Task">
+            <requestFocus />
+        </EditText>
+
+        <Button
+            android:id="@+id/submit_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="createHackathon"
+            android:text="Submit" />
+    </LinearLayout>
+
+
      <ListView
          android:layout_width="match_parent"
          android:layout_height="match_parent"
